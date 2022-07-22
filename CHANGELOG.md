@@ -36,13 +36,20 @@
 ## Changelog
 
 
+<a name="v0.2.0"></a>
+## [v0.2.0] - 2022-07-22
+### Code Refactoring
+- embed streams inside printer options
+
+
 <a name="v0.1.0"></a>
 ## v0.1.0 - 2022-07-17
 ### Features
 - expose go-printers as a printers package
 
 
-[Unreleased]: https://github.com/davidalpert/go-git-mob/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/davidalpert/go-git-mob/compare/v0.2.0...HEAD
+[v0.2.0]: https://github.com/davidalpert/go-git-mob/compare/v0.1.0...v0.2.0
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/davidalpert/go-printers
