@@ -15,11 +15,18 @@ type PrinterOptions struct {
 	Caption             *string
 	PopulateTable       *func(*tablewriter.Table)
 	ItemsSelector       *func() interface{}
+	Streams             IOStreams
 }
 
 // NewPrinterOptions defines new printer options
 func NewPrinterOptions() *PrinterOptions {
-	return (&PrinterOptions{}).WithDefaultOutput("text")
+	return (&PrinterOptions{Streams: DefaultOSStreams()}).WithDefaultOutput("text")
+}
+
+// WithStreams sets the IOStreams used by the PrinterOptions
+func (o *PrinterOptions) WithStreams(s IOStreams) *PrinterOptions {
+	o.Streams = s
+	return o
 }
 
 // WithDefaultOutput sets a default output format if one is not provided through a flag value
@@ -30,7 +37,7 @@ func (o *PrinterOptions) WithDefaultOutput(output string) *PrinterOptions {
 
 // WithDefaultTableWriter sets a default table writer
 func (o *PrinterOptions) WithDefaultTableWriter() *PrinterOptions {
-	return o.WithDefaultOutput("text").WithTableWriter("n/a", func(t *tablewriter.Table) {})
+	return o.WithDefaultOutput("table").WithTableWriter("n/a", func(t *tablewriter.Table) {})
 }
 
 // WithTableWriter decorates a PrinterOptions with table writer configuration

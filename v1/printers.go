@@ -35,13 +35,13 @@ func (ios IOStreams) WriteOutput(v interface{}, o *PrinterOptions) error {
 		return err
 	}
 
-	ios.WriteString(output)
-	return nil
+	_, err = fmt.Fprintf(ios.Out, output)
+	return err
 }
 
 // WriteOutput writes output in the configured format
 func (o *PrinterOptions) WriteOutput(v interface{}) error {
-	return DefaultOSStreams().WriteOutput(v, o)
+	return o.Streams.WriteOutput(v, o)
 }
 
 // FormatOutput writes a single object in the configured format
