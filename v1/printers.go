@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"io"
 	"reflect"
 	"sort"
 	"strings"
@@ -17,17 +18,27 @@ import (
 // WriteOutput writes output in the configured format with default printer options
 // retained for backwards compat with verb-noun commands which assume STDOUT
 func WriteOutput(v interface{}, caption string, populateTable func(*tablewriter.Table)) error {
-	return DefaultOSStreams().WriteOutput(v, NewPrinterOptions().WithTableWriter(caption, populateTable))
+	return NewPrinterOptions().WithTableWriter(caption, populateTable).WriteOutput(v)
 }
 
 // DescribeObject writes a single object in the default format with default printer options
 // retained for backwards compat with verb-noun commands which assume STDOUT
 func DescribeObject(v interface{}) error {
-	return DefaultOSStreams().WriteOutput(v, NewPrinterOptions())
+	return NewPrinterOptions().WriteOutput(v)
+}
+
+// WriteErr writes output to s.Err in the configured format
+func (o *PrinterOptions) WriteErr(v interface{}) error {
+	return o.FWriteOutput(o.ErrOut, v)
 }
 
 // WriteOutput writes output to s.Out in the configured format
-func (ios IOStreams) WriteOutput(v interface{}, o *PrinterOptions) error {
+func (o *PrinterOptions) WriteOutput(v interface{}) error {
+	return o.FWriteOutput(o.Out, v)
+}
+
+// FWriteOutput writes output to given ioWriter in the configured format
+func (o *PrinterOptions) FWriteOutput(s io.Writer, v interface{}) error {
 	ExitIfErr(o.Validate())
 
 	output, _, err := o.FormatOutput(v)
@@ -35,13 +46,8 @@ func (ios IOStreams) WriteOutput(v interface{}, o *PrinterOptions) error {
 		return err
 	}
 
-	_, err = fmt.Fprintf(ios.Out, output)
+	_, err = fmt.Fprintf(s, output)
 	return err
-}
-
-// WriteOutput writes output in the configured format
-func (o *PrinterOptions) WriteOutput(v interface{}) error {
-	return o.IOStreams.WriteOutput(v, o)
 }
 
 // FormatOutput writes a single object in the configured format
