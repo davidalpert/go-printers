@@ -41,7 +41,7 @@ func (ios IOStreams) WriteOutput(v interface{}, o *PrinterOptions) error {
 
 // WriteOutput writes output in the configured format
 func (o *PrinterOptions) WriteOutput(v interface{}) error {
-	return o.Streams.WriteOutput(v, o)
+	return o.IOStreams.WriteOutput(v, o)
 }
 
 // FormatOutput writes a single object in the configured format
@@ -55,18 +55,18 @@ func (o *PrinterOptions) FormatOutput(v interface{}) (string, string, error) {
 	formatCategory := o.FormatCategory()
 	output := ""
 
-	// tables are special and only work if the PrinterOptions have defined a PopulateTable function
+	// tables are special and only work if the PrinterOptions have defined a TablePopulateFN function
 	if formatCategory == "table" {
-		if o.PopulateTable == nil {
-			ExitIfErr(fmt.Errorf("output format is %s but PopulateTable is not defined", outputFormat))
+		if o.TablePopulateFN == nil {
+			ExitIfErr(fmt.Errorf("output format is %s but TablePopulateFN is not defined", outputFormat))
 		}
 
 		outputStringBuilder := &strings.Builder{}
 		table := tablewriter.NewWriter(outputStringBuilder)
-		if *o.Caption != "" {
-			table.SetCaption(true, *o.Caption)
+		if *o.TableCaption != "" {
+			table.SetCaption(true, *o.TableCaption)
 		}
-		(*o.PopulateTable)(table)
+		(*o.TablePopulateFN)(table)
 
 		table.Render()
 

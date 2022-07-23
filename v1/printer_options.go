@@ -12,20 +12,20 @@ import (
 type PrinterOptions struct {
 	OutputFormat        *string
 	DefaultOutputFormat *string
-	Caption             *string
-	PopulateTable       *func(*tablewriter.Table)
+	TableCaption        *string
+	TablePopulateFN     *func(*tablewriter.Table)
 	ItemsSelector       *func() interface{}
-	Streams             IOStreams
+	IOStreams
 }
 
 // NewPrinterOptions defines new printer options
 func NewPrinterOptions() *PrinterOptions {
-	return (&PrinterOptions{Streams: DefaultOSStreams()}).WithDefaultOutput("text")
+	return (&PrinterOptions{IOStreams: DefaultOSStreams()}).WithDefaultOutput("text")
 }
 
 // WithStreams sets the IOStreams used by the PrinterOptions
 func (o *PrinterOptions) WithStreams(s IOStreams) *PrinterOptions {
-	o.Streams = s
+	o.IOStreams = s
 	return o
 }
 
@@ -42,8 +42,8 @@ func (o *PrinterOptions) WithDefaultTableWriter() *PrinterOptions {
 
 // WithTableWriter decorates a PrinterOptions with table writer configuration
 func (o *PrinterOptions) WithTableWriter(caption string, populateTable func(*tablewriter.Table)) *PrinterOptions {
-	o.Caption = &caption
-	o.PopulateTable = &populateTable
+	o.TableCaption = &caption
+	o.TablePopulateFN = &populateTable
 	return o
 }
 
@@ -54,7 +54,7 @@ func (o *PrinterOptions) WithItemsSelector(selectItems func() interface{}) *Prin
 
 // SupportedFormats returns the list of supported formats
 func (o *PrinterOptions) SupportedFormats() []string {
-	if o.PopulateTable != nil {
+	if o.TablePopulateFN != nil {
 		return supportedListPrinterKeys
 	}
 	return supportedObjectPrinterKeys
@@ -62,7 +62,7 @@ func (o *PrinterOptions) SupportedFormats() []string {
 
 // SupportedFormatCategories returns the list of supported formats
 func (o *PrinterOptions) SupportedFormatCategories() []string {
-	if o.PopulateTable != nil {
+	if o.TablePopulateFN != nil {
 		return supportedListPrinterCategories
 	}
 	return supportedObjectPrinterCategories
@@ -80,7 +80,7 @@ func (o *PrinterOptions) Validate() error {
 func (o *PrinterOptions) FormatCategory() string {
 	ExitIfErr(o.Validate())
 
-	if o.PopulateTable != nil {
+	if o.TablePopulateFN != nil {
 		return supportedListPrinterFormatMap[*o.OutputFormat]
 	}
 	return supportedObjectPrinterFormatMap[*o.OutputFormat]
@@ -89,7 +89,7 @@ func (o *PrinterOptions) FormatCategory() string {
 // AddPrinterFlags adds flags to a cobra.Command
 func (o *PrinterOptions) AddPrinterFlags(c *pflag.FlagSet) {
 	if o.OutputFormat != nil {
-		if o.PopulateTable != nil {
+		if o.TablePopulateFN != nil {
 			o.addListPrinterFlags(c)
 		} else {
 			o.addObjectPrinterFlags(c)
