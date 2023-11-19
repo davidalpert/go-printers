@@ -31,7 +31,7 @@ func (o *PrinterOptions) WithStreams(s IOStreams) *PrinterOptions {
 
 // WithDefaultOutput sets a default output format if one is not provided through a flag value
 func (o *PrinterOptions) WithDefaultOutput(output string) *PrinterOptions {
-	o.OutputFormat = &output
+	o.DefaultOutputFormat = &output
 	return o
 }
 
@@ -100,13 +100,13 @@ func (o *PrinterOptions) AddPrinterFlags(c *pflag.FlagSet) {
 // AddObjectPrinterFlags adds flags to a cobra.Command
 func (o *PrinterOptions) addObjectPrinterFlags(c *pflag.FlagSet) {
 	if o.OutputFormat != nil {
-		c.StringVarP(o.OutputFormat, "output", "o", *o.OutputFormat, fmt.Sprintf("output format: one of %s.", strings.Join(supportedObjectPrinterCategories, "|")))
+		c.StringVarP(o.OutputFormat, "output", "o", *o.DefaultOutputFormat, fmt.Sprintf("output format: one of %s.", strings.Join(supportedObjectPrinterCategories, "|")))
 	}
 }
 
 // AddListPrinterFlags adds flags to a cobra.Command
 func (o *PrinterOptions) addListPrinterFlags(c *pflag.FlagSet) {
 	if o.OutputFormat != nil {
-		c.StringVarP(o.OutputFormat, "output", "o", *o.OutputFormat, fmt.Sprintf("output format: one of %s.", strings.Join(supportedListPrinterCategories, "|")))
+		c.StringVarP(o.OutputFormat, "output", "o", *o.DefaultOutputFormat, fmt.Sprintf("output format: one of %s.", strings.Join(supportedListPrinterCategories, "|")))
 	}
 }
