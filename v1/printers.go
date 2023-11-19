@@ -57,7 +57,7 @@ func FormatOutput(v interface{}, outputFormat string) (string, string, error) {
 
 // FormatOutput writes a single object in the configured format
 func (o *PrinterOptions) FormatOutput(v interface{}) (string, string, error) {
-	outputFormat := *o.OutputFormat
+	outputFormat := o.ActiveOutputFormat()
 	formatCategory := o.FormatCategory()
 	output := ""
 

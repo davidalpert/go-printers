@@ -52,6 +52,20 @@ func (o *PrinterOptions) WithItemsSelector(selectItems func() interface{}) *Prin
 	return o
 }
 
+// ActiveOutputFormat provides the resolved output format (falling back to configured default, then text)
+// this allows us to reduce the use of * which assumes that we have a value; this function always returns
+// a string, resolving in one place the possibility of either configured o.OutputFormat or o.DefaultOutputFormat
+// to be nil
+func (o *PrinterOptions) ActiveOutputFormat() string {
+	if o.OutputFormat != nil && *o.OutputFormat != "" {
+		return *o.OutputFormat
+	}
+	if o.DefaultOutputFormat != nil && *o.DefaultOutputFormat != "" {
+		return *o.DefaultOutputFormat
+	}
+	return "text"
+}
+
 // SupportedFormats returns the list of supported formats
 func (o *PrinterOptions) SupportedFormats() []string {
 	if o.TablePopulateFN != nil {
@@ -70,8 +84,8 @@ func (o *PrinterOptions) SupportedFormatCategories() []string {
 
 // Validate asserts that the printer options are valid
 func (o *PrinterOptions) Validate() error {
-	if !StringInSlice(o.SupportedFormats(), *o.OutputFormat) {
-		return fmt.Errorf("invalid output format: %s\nvalid format values are: %v", *o.OutputFormat, strings.Join(o.SupportedFormatCategories(), "|"))
+	if !StringInSlice(o.SupportedFormats(), o.ActiveOutputFormat()) {
+		return fmt.Errorf("invalid output format: %s\nvalid format values are: %v", o.ActiveOutputFormat(), strings.Join(o.SupportedFormatCategories(), "|"))
 	}
 	return nil
 }
@@ -81,32 +95,30 @@ func (o *PrinterOptions) FormatCategory() string {
 	ExitIfErr(o.Validate())
 
 	if o.TablePopulateFN != nil {
-		return supportedListPrinterFormatMap[*o.OutputFormat]
+		return supportedListPrinterFormatMap[o.ActiveOutputFormat()]
 	}
-	return supportedObjectPrinterFormatMap[*o.OutputFormat]
+	return supportedObjectPrinterFormatMap[o.ActiveOutputFormat()]
 }
 
 // AddPrinterFlags adds flags to a cobra.Command
 func (o *PrinterOptions) AddPrinterFlags(c *pflag.FlagSet) {
-	if o.OutputFormat != nil {
-		if o.TablePopulateFN != nil {
-			o.addListPrinterFlags(c)
-		} else {
-			o.addObjectPrinterFlags(c)
-		}
+	if o.TablePopulateFN != nil {
+		o.addListPrinterFlags(c)
+	} else {
+		o.addObjectPrinterFlags(c)
 	}
 }
 
 // AddObjectPrinterFlags adds flags to a cobra.Command
 func (o *PrinterOptions) addObjectPrinterFlags(c *pflag.FlagSet) {
 	if o.OutputFormat != nil {
-		c.StringVarP(o.OutputFormat, "output", "o", *o.DefaultOutputFormat, fmt.Sprintf("output format: one of %s.", strings.Join(supportedObjectPrinterCategories, "|")))
+		c.StringVarP(o.OutputFormat, "output", "o", o.ActiveOutputFormat(), fmt.Sprintf("output format: one of %s.", strings.Join(supportedObjectPrinterCategories, "|")))
 	}
 }
 
 // AddListPrinterFlags adds flags to a cobra.Command
 func (o *PrinterOptions) addListPrinterFlags(c *pflag.FlagSet) {
 	if o.OutputFormat != nil {
-		c.StringVarP(o.OutputFormat, "output", "o", *o.DefaultOutputFormat, fmt.Sprintf("output format: one of %s.", strings.Join(supportedListPrinterCategories, "|")))
+		c.StringVarP(o.OutputFormat, "output", "o", o.ActiveOutputFormat(), fmt.Sprintf("output format: one of %s.", strings.Join(supportedListPrinterCategories, "|")))
 	}
 }
