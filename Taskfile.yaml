@@ -25,7 +25,7 @@ tasks:
   clean:
     desc: clean build output
     cmds:
-      - rm -rf /bin
+      - rm -rf ./bin
 
   vale:
     desc: run linting rules against markdown files
