@@ -45,17 +45,6 @@ tasks:
     cmds:
       - bundle exec guard
 
-  gen:
-    desc: run code-generation
-    run: once
-    cmds:
-      - go run ./.tools/version_gen.go {{ .CMD_NAME }}
-    env:
-      VERSION: "{{ .VERSION }}"
-    status:
-      # - grep "\"{{ .VERSION }}\"" internal/version/detail.go
-      - '[[ -n $SKIP_GEN ]]'
-
   bundle:
     desc: install ruby gems
     run: once
@@ -71,8 +60,6 @@ tasks:
 
   autotest:
     desc: run tests continuously using goconvey's test UI
-    deps:
-      - gen
     cmds:
       - goconvey
     silent: true
@@ -89,11 +76,6 @@ tasks:
 
   release:
     cmds:
-      - task: gen
-        vars:
-          VERSION: "{{ .NEXT_VERSION }}"
-      # - task: features
-      - git add -f internal/version/detail.go
       - git-chglog --next-tag v{{ .NEXT_VERSION }} --output CHANGELOG.md
       - git add -f CHANGELOG.md
       - git commit --message "release notes for v{{ .NEXT_VERSION }}"
