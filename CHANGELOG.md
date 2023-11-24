@@ -36,6 +36,34 @@
 ## Changelog
 
 
+<a name="v0.3.1"></a>
+## [v0.3.1] - 2023-11-24
+### Bug Fixes
+- default output format not set properly
+- oldest one in the book
+
+### Build
+- don't bother with gen for a package
+- add ci/cd actions
+- replace make with task
+
+### Chore
+- downgrade module version to go 1.17
+
+### Features
+- add ActiveOutputFormat() method
+
+### Test Coverage
+- demonstrate using TestIOStreams
+- reproduce issue [#1](https://github.com/davidalpert/go-git-mob/issues/1)
+- add ginko and gomega as a testing framework
+
+### Pull Requests
+- Merge pull request [#2](https://github.com/davidalpert/go-git-mob/issues/2) from davidalpert/[GH-1](https://github.com/davidalpert/go-git-mob/issues/1)-default-output-format-not-properly-set
+- Merge pull request [#6](https://github.com/davidalpert/go-git-mob/issues/6) from davidalpert/[GH-3](https://github.com/davidalpert/go-git-mob/issues/3)-add-cicd-actions
+- Merge pull request [#5](https://github.com/davidalpert/go-git-mob/issues/5) from davidalpert/[GH-4](https://github.com/davidalpert/go-git-mob/issues/4)-replace-makefile-with-taskfile
+
+
 <a name="v0.3.0"></a>
 ## [v0.3.0] - 2022-07-23
 ### Bug Fixes
@@ -57,7 +85,8 @@
 - expose go-printers as a printers package
 
 
-[Unreleased]: https://github.com/davidalpert/go-git-mob/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/davidalpert/go-git-mob/compare/v0.3.1...HEAD
+[v0.3.1]: https://github.com/davidalpert/go-git-mob/compare/v0.3.0...v0.3.1
 [v0.3.0]: https://github.com/davidalpert/go-git-mob/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/davidalpert/go-git-mob/compare/v0.1.0...v0.2.0
 <!-- MARKDOWN LINKS & IMAGES -->
