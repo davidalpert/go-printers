@@ -106,6 +106,8 @@ go get https://github.com/davidalpert/go-printers
     ```
     testStreams, testOutBuf, testErrBuf, testInBuf := printers.NewTestIOStreams()
     ```
+   
+    See the [#NewTestIOStreams](./v1/v1_suite_test.go#29-81) test scenario for an example of using these buffers in unit tests.
 
 1. Configure flags inside a `cobra.Command` factory:
 
