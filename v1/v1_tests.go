@@ -141,7 +141,7 @@ var _ = Describe("go-printers", func() {
 				Ω(err).Should(BeNil())
 
 				// read from the test buffer
-				Ω(outBuf.String()).Should(Equal("&printers.TestData{IntField:42, StringField:\"the answer to the question\"}"))
+				Ω(outBuf.String()).Should(Equal("&{42 the answer to the question}"))
 			})
 
 			It("should capture a pointer to a struct without Stringer cast as interface{} as %v", func() {
@@ -161,7 +161,7 @@ var _ = Describe("go-printers", func() {
 				Ω(err).Should(BeNil())
 
 				// read from the test buffer
-				Ω(outBuf.String()).Should(Equal("&printers.TestData{IntField:42, StringField:\"the answer to the question\"}"))
+				Ω(outBuf.String()).Should(Equal("&{42 the answer to the question}"))
 			})
 
 			It("should capture a struct with Stringer as %s", func() {
