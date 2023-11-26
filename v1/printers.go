@@ -114,7 +114,14 @@ var supportedListPrinterCategories = []string{}
 func (o *PrinterOptions) marshalObjectToString(v interface{}, formatCategory string) (string, string, error) {
 	output := ""
 	if formatCategory == "text" {
-		output = fmt.Sprintf("%v", v)
+		switch vv := v.(type) {
+		case fmt.Stringer:
+			output = vv.String()
+			break
+		default:
+			output = fmt.Sprintf("%v", v)
+			break
+		}
 	} else if formatCategory == "yaml" {
 		oB, _ := yaml.Marshal(v)
 		output = string(oB)
