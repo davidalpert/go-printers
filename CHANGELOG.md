@@ -36,6 +36,20 @@
 ## Changelog
 
 
+<a name="v0.3.2"></a>
+## [v0.3.2] - 2023-11-26
+### Bug Fixes
+- outsmarting the golang fmt package doesn't work
+- marshalObjectToString ignored fmt.Stringer
+- AddPrinterOptions broke in 0.3.1
+
+### Build
+- a .tools-version file sets golang locally for asdf
+
+### Features
+- use GoStringer when available
+
+
 <a name="v0.3.1"></a>
 ## [v0.3.1] - 2023-11-24
 ### Bug Fixes
@@ -85,7 +99,8 @@
 - expose go-printers as a printers package
 
 
-[Unreleased]: https://github.com/davidalpert/go-git-mob/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/davidalpert/go-git-mob/compare/v0.3.2...HEAD
+[v0.3.2]: https://github.com/davidalpert/go-git-mob/compare/v0.3.1...v0.3.2
 [v0.3.1]: https://github.com/davidalpert/go-git-mob/compare/v0.3.0...v0.3.1
 [v0.3.0]: https://github.com/davidalpert/go-git-mob/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/davidalpert/go-git-mob/compare/v0.1.0...v0.2.0
