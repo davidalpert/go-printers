@@ -111,6 +111,9 @@ var supportedObjectPrinterCategories = []string{}
 var supportedListPrinterKeys = []string{}
 var supportedListPrinterCategories = []string{}
 
+// isPtr returns true when i is a pointer (see: https://stackoverflow.com/a/31285786)
+func isPtr(i interface{}) bool { return reflect.ValueOf(i).Kind() == reflect.Ptr }
+
 func (o *PrinterOptions) marshalObjectToString(v interface{}, formatCategory string) (string, string, error) {
 	output := ""
 	if formatCategory == "text" {
@@ -118,8 +121,15 @@ func (o *PrinterOptions) marshalObjectToString(v interface{}, formatCategory str
 		case fmt.Stringer:
 			output = vv.String()
 			break
+		case fmt.GoStringer:
+			output = vv.GoString()
+			break
 		default:
-			output = fmt.Sprintf("%v", v)
+			if isPtr(v) {
+				output = fmt.Sprintf("%#v", v)
+			} else {
+				output = fmt.Sprintf("%v", v)
+			}
 			break
 		}
 	} else if formatCategory == "yaml" {
