@@ -6,6 +6,7 @@ import (
 	"fmt"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	flag "github.com/spf13/pflag"
 )
 
 var _ = Describe("go-printers", func() {
@@ -22,7 +23,22 @@ var _ = Describe("go-printers", func() {
 		})
 
 		It("should set output to nil", func() {
-			Ω(o.OutputFormat).Should(BeNil())
+			Ω(o.OutputFormat).Should(BeEmpty())
+		})
+
+		It("should set flags on a *pflag.FlagSet", func() {
+			f := flag.NewFlagSet("test", flag.ContinueOnError)
+			o.AddPrinterFlags(f)
+
+			longFlag := f.Lookup("output")
+			Ω(longFlag).ShouldNot(BeNil())
+			Ω(longFlag.Name).Should(Equal("output"))
+			Ω(longFlag.DefValue).Should(Equal("text"))
+
+			shortFlag := f.ShorthandLookup("o")
+			Ω(shortFlag).ShouldNot(BeNil())
+			Ω(shortFlag.Name).Should(Equal("output"))
+			Ω(longFlag.DefValue).Should(Equal("text"))
 		})
 	})
 

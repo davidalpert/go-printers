@@ -165,7 +165,7 @@ func (o *PrinterOptions) ParseOutput(in []byte, v interface{}) error {
 		return gocsv.UnmarshalBytes(in, v)
 	}
 
-	return fmt.Errorf("do not know how to parse output=%s or category %s", *o.OutputFormat, formatCategory)
+	return fmt.Errorf("do not know how to parse output=%s or category %s", o.ActiveOutputFormat(), formatCategory)
 }
 
 func containsString(list []string, q string) bool {

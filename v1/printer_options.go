@@ -10,7 +10,7 @@ import (
 
 // PrinterOptions contains options for printing
 type PrinterOptions struct {
-	OutputFormat        *string
+	OutputFormat        string
 	DefaultOutputFormat *string
 	TableCaption        *string
 	TablePopulateFN     *func(*tablewriter.Table)
@@ -57,8 +57,8 @@ func (o *PrinterOptions) WithItemsSelector(selectItems func() interface{}) *Prin
 // a string, resolving in one place the possibility of either configured o.OutputFormat or o.DefaultOutputFormat
 // to be nil
 func (o *PrinterOptions) ActiveOutputFormat() string {
-	if o.OutputFormat != nil && *o.OutputFormat != "" {
-		return *o.OutputFormat
+	if o.OutputFormat != "" {
+		return o.OutputFormat
 	}
 	if o.DefaultOutputFormat != nil && *o.DefaultOutputFormat != "" {
 		return *o.DefaultOutputFormat
@@ -111,14 +111,10 @@ func (o *PrinterOptions) AddPrinterFlags(c *pflag.FlagSet) {
 
 // AddObjectPrinterFlags adds flags to a cobra.Command
 func (o *PrinterOptions) addObjectPrinterFlags(c *pflag.FlagSet) {
-	if o.OutputFormat != nil {
-		c.StringVarP(o.OutputFormat, "output", "o", o.ActiveOutputFormat(), fmt.Sprintf("output format: one of %s.", strings.Join(supportedObjectPrinterCategories, "|")))
-	}
+	c.StringVarP(&o.OutputFormat, "output", "o", o.ActiveOutputFormat(), fmt.Sprintf("output format: one of %s.", strings.Join(supportedObjectPrinterCategories, "|")))
 }
 
 // AddListPrinterFlags adds flags to a cobra.Command
 func (o *PrinterOptions) addListPrinterFlags(c *pflag.FlagSet) {
-	if o.OutputFormat != nil {
-		c.StringVarP(o.OutputFormat, "output", "o", o.ActiveOutputFormat(), fmt.Sprintf("output format: one of %s.", strings.Join(supportedListPrinterCategories, "|")))
-	}
+	c.StringVarP(&o.OutputFormat, "output", "o", o.ActiveOutputFormat(), fmt.Sprintf("output format: one of %s.", strings.Join(supportedListPrinterCategories, "|")))
 }
