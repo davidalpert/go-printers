@@ -156,7 +156,7 @@ if [[ -n "$GO" ]]; then
   grepVersion 'go' 'go version' "$GO"
 fi
 
-REQUIRED_RUBY_VERSION=`cat .ruby-version`
+REQUIRED_RUBY_VERSION=`cat .tool-versions | grep ruby | awk '{print $2}'`
 findCmd ruby
 grepVersion 'ruby' 'ruby --version' "$REQUIRED_RUBY_VERSION"
 findCmd gem
