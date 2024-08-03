@@ -13,12 +13,23 @@ options:
       #   - perf
       #   - refactor
   commit_groups:
+    sort_by: Custom
     title_maps:
       feat: Features
       fix: Bug Fixes
       perf: Performance Improvements
       refactor: Code Refactoring
       test: Test Coverage
+      build: Build
+      chore: Chore
+    title_order:
+      - feat
+      - fix
+      - perf
+      - refactor
+      - test
+      - build
+      - chore
   header:
     pattern: "^(\\w*)(?:\\(([\\w\\$\\.\\-\\*\\s]*)\\))?\\:\\s(.*)$"
     pattern_maps:
