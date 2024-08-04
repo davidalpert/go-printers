@@ -10,7 +10,7 @@ jobs:
   publish_release:
     permissions:
       id-token: write # This is required for requesting the JWT
-      contents: write # This is required to checkout the code and write releases
+      contents: write # This is required to check out the code and write releases
 
     runs-on: ubuntu-latest
 
@@ -32,6 +32,8 @@ jobs:
       - name: Setup build dependencies
         run: |
           go install github.com/restechnica/semverbot/cmd/sbot@latest
+          asdf reshim golang
+          which sbot
 
       - name: Run Validation
         run: task cit
