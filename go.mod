@@ -1,6 +1,6 @@
 module github.com/davidalpert/go-printers
 
-go 1.17
+go 1.20
 
 require (
 	github.com/go-xmlfmt/xmlfmt v0.0.0-20220206211657-0a94163c4677
