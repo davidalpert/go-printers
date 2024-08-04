@@ -1,0 +1,63 @@
+name: Publish Tagged Release
+
+on:
+  push:
+    # run only against tags
+    tags:
+      - '*'
+
+jobs:
+  publish_release:
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: write # This is required to checkout the code and write releases
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-tags: true
+          fetch-depth: 0
+
+      - name: Fetch all tags
+        run: git fetch --force --tags
+
+      - name: Install asdf & tools
+        uses: asdf-vm/actions/install@v3
+
+      - name: Setup build dependencies
+        run: |
+          go install github.com/restechnica/semverbot/cmd/sbot@latest
+
+      - name: Run Validation
+        run: task cit
+
+      - name: Read Previous Version
+        run: echo "last_tag=$(git tag --sort=-version:refname | head -n 2 | tail -n 1)" >> $GITHUB_ENV
+
+      - name: Read Latest Version
+        run: echo "this_tag=$(git tag --sort=-version:refname | head -n 2 | head -n 1 )" >> $GITHUB_ENV
+
+      - name: Generate Release Notes for this version
+        id: chglog
+        run: |
+          task preview-release-notes
+          echo "store multiline markdown output as a github env var:"
+          echo 'release_notes_md<<EOF' >> $GITHUB_ENV
+          cat ./RELEASE_NOTES.md >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          cat $GITHUB_ENV
+
+      - name: Publish Release
+        id: publish_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ env.this_tag }}
+          release_name: Release ${{ env.this_tag }}
+          body: ${{ env.release_notes_md }}
+          draft: false
+          prerelease: false
