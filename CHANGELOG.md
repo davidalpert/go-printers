@@ -36,8 +36,30 @@
 ## Changelog
 
 
+<a name="v0.4.0"></a>
+## [v0.4.0] - 2024-08-03
+### Features
+- support o.OverrideOutputFormat(format)
+
+### Build
+- update PR workflow to use asdf
+- skip vale on a release build
+- reshim asdf golan after tool install
+- skip installing ruby when releasing
+- upgrade base golang to 1.20 for compat with sbot
+- add release action
+- bump yaml pkg to v3
+- sort commits in CHGLOG
+- asdf for git-chglog
+- cit on floyd (my darwin-23)
+- normalize on asdf for tool versions
+
+
 <a name="v0.3.2"></a>
 ## [v0.3.2] - 2023-11-26
+### Features
+- use GoStringer when available
+
 ### Bug Fixes
 - outsmarting the golang fmt package doesn't work
 - marshalObjectToString ignored fmt.Stringer
@@ -46,15 +68,20 @@
 ### Build
 - a .tools-version file sets golang locally for asdf
 
-### Features
-- use GoStringer when available
-
 
 <a name="v0.3.1"></a>
 ## [v0.3.1] - 2023-11-24
+### Features
+- add ActiveOutputFormat() method
+
 ### Bug Fixes
 - default output format not set properly
 - oldest one in the book
+
+### Test Coverage
+- demonstrate using TestIOStreams
+- reproduce issue [#1](https://github.com/davidalpert/go-git-mob/issues/1)
+- add ginko and gomega as a testing framework
 
 ### Build
 - don't bother with gen for a package
@@ -63,14 +90,6 @@
 
 ### Chore
 - downgrade module version to go 1.17
-
-### Features
-- add ActiveOutputFormat() method
-
-### Test Coverage
-- demonstrate using TestIOStreams
-- reproduce issue [#1](https://github.com/davidalpert/go-git-mob/issues/1)
-- add ginko and gomega as a testing framework
 
 ### Pull Requests
 - Merge pull request [#2](https://github.com/davidalpert/go-git-mob/issues/2) from davidalpert/[GH-1](https://github.com/davidalpert/go-git-mob/issues/1)-default-output-format-not-properly-set
@@ -99,7 +118,8 @@
 - expose go-printers as a printers package
 
 
-[Unreleased]: https://github.com/davidalpert/go-git-mob/compare/v0.3.2...HEAD
+[Unreleased]: https://github.com/davidalpert/go-git-mob/compare/v0.4.0...HEAD
+[v0.4.0]: https://github.com/davidalpert/go-git-mob/compare/v0.3.2...v0.4.0
 [v0.3.2]: https://github.com/davidalpert/go-git-mob/compare/v0.3.1...v0.3.2
 [v0.3.1]: https://github.com/davidalpert/go-git-mob/compare/v0.3.0...v0.3.1
 [v0.3.0]: https://github.com/davidalpert/go-git-mob/compare/v0.2.0...v0.3.0
