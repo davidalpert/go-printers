@@ -12,7 +12,7 @@ import (
 	"github.com/go-xmlfmt/xmlfmt"
 	"github.com/gocarina/gocsv"
 	"github.com/olekukonko/tablewriter"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 // WriteOutput writes output in the configured format with default printer options
