@@ -24,8 +24,10 @@ jobs:
       - name: Fetch all tags
         run: git fetch --force --tags
 
-      - name: Install asdf & tools
+      - name: Install asdf & tools # except ruby; not required for releasing
         uses: asdf-vm/actions/install@v3
+        with:
+          before_install: "sed -E -i '/^ruby.+$/d' .tool-versions"
 
       - name: Setup build dependencies
         run: |
