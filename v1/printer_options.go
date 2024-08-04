@@ -29,6 +29,29 @@ func (o *PrinterOptions) WithStreams(s IOStreams) *PrinterOptions {
 	return o
 }
 
+// OverrideOutputFormat returns a copy of the PrinterOptions with an overridden OutputFormat
+func (o *PrinterOptions) OverrideOutputFormat(output string) *PrinterOptions {
+	o2 := PrinterOptions{
+		OutputFormat: output,
+		IOStreams:    o.IOStreams,
+	}
+	if o.DefaultOutputFormat != nil {
+		o2.DefaultOutputFormat = StringPointer(*o.DefaultOutputFormat)
+	}
+	if o.TableCaption != nil {
+		o2.TableCaption = StringPointer(*o.TableCaption)
+	}
+	if o.TablePopulateFN != nil {
+		fn := *o.TablePopulateFN
+		o2.TablePopulateFN = &fn
+	}
+	if o.ItemsSelector != nil {
+		sel := *o.ItemsSelector
+		o2.ItemsSelector = &sel
+	}
+	return &o2
+}
+
 // WithDefaultOutput sets a default output format if one is not provided through a flag value
 func (o *PrinterOptions) WithDefaultOutput(output string) *PrinterOptions {
 	o.DefaultOutputFormat = &output

@@ -196,5 +196,48 @@ var _ = Describe("go-printers", func() {
 				Ω(outBuf.String()).Should(Equal("stringed< the answer to the question is 42 >"))
 			})
 		})
+
+		Describe("overriding the output format", func() {
+			BeforeEach(func() {
+				o.OutputFormat = "json"
+				o.WithDefaultOutput("yaml")
+			})
+
+			It("without an override", func() {
+				testData := TestDataWithStringer{
+					TestData: TestData{
+						IntField:    42,
+						StringField: "the answer to the question",
+					},
+				}
+
+				// write via custom helpers
+				err := o.WriteOutput(testData)
+				Ω(err).Should(BeNil())
+
+				// read from the test buffer
+				Ω(outBuf.String()).Should(Equal(`{
+  "IntField": 42,
+  "StringField": "the answer to the question"
+}
+`))
+			})
+
+			It("with an override", func() {
+				testData := TestDataWithStringer{
+					TestData: TestData{
+						IntField:    42,
+						StringField: "the answer to the question",
+					},
+				}
+
+				// write via custom helpers
+				err := o.OverrideOutputFormat("text").WriteOutput(testData)
+				Ω(err).Should(BeNil())
+
+				// read from the test buffer
+				Ω(outBuf.String()).Should(Equal("stringed< the answer to the question is 42 >"))
+			})
+		})
 	})
 })
