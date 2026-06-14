@@ -12,6 +12,7 @@ import (
 	"github.com/go-xmlfmt/xmlfmt"
 	"github.com/gocarina/gocsv"
 	"github.com/olekukonko/tablewriter"
+	"github.com/olekukonko/tablewriter/tw"
 	"gopkg.in/yaml.v3"
 )
 
@@ -70,11 +71,13 @@ func (o *PrinterOptions) FormatOutput(v interface{}) (string, string, error) {
 		outputStringBuilder := &strings.Builder{}
 		table := tablewriter.NewWriter(outputStringBuilder)
 		if *o.TableCaption != "" {
-			table.SetCaption(true, *o.TableCaption)
+			table.Caption(tw.Caption{Text: *o.TableCaption})
 		}
 		(*o.TablePopulateFN)(table)
 
-		table.Render()
+		if err := table.Render(); err != nil {
+			return "", formatCategory, err
+		}
 
 		return outputStringBuilder.String(), formatCategory, nil
 	} else if formatCategory != "" {
