@@ -36,8 +36,17 @@
 ## Changelog
 
 
+<a name="v0.5.0"></a>
+## [v0.5.0] - 2026-06-14
+### Features
+- update underlying tablewriter to 1.1.4
+
+### Build
+- update golang to 1.21.4
+
+
 <a name="v0.4.0"></a>
-## [v0.4.0] - 2024-08-03
+## [v0.4.0] - 2024-08-04
 ### Features
 - support o.OverrideOutputFormat(format)
 
@@ -118,7 +127,8 @@
 - expose go-printers as a printers package
 
 
-[Unreleased]: https://github.com/davidalpert/go-git-mob/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/davidalpert/go-git-mob/compare/v0.5.0...HEAD
+[v0.5.0]: https://github.com/davidalpert/go-git-mob/compare/v0.4.0...v0.5.0
 [v0.4.0]: https://github.com/davidalpert/go-git-mob/compare/v0.3.2...v0.4.0
 [v0.3.2]: https://github.com/davidalpert/go-git-mob/compare/v0.3.1...v0.3.2
 [v0.3.1]: https://github.com/davidalpert/go-git-mob/compare/v0.3.0...v0.3.1
