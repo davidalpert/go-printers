@@ -36,6 +36,12 @@
 ## Changelog
 
 
+<a name="v0.5.1"></a>
+## [v0.5.1] - 2026-06-16
+### Build
+- upgrade asdf to mise
+
+
 <a name="v0.5.0"></a>
 ## [v0.5.0] - 2026-06-14
 ### Features
@@ -127,7 +133,8 @@
 - expose go-printers as a printers package
 
 
-[Unreleased]: https://github.com/davidalpert/go-git-mob/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/davidalpert/go-git-mob/compare/v0.5.1...HEAD
+[v0.5.1]: https://github.com/davidalpert/go-git-mob/compare/v0.5.0...v0.5.1
 [v0.5.0]: https://github.com/davidalpert/go-git-mob/compare/v0.4.0...v0.5.0
 [v0.4.0]: https://github.com/davidalpert/go-git-mob/compare/v0.3.2...v0.4.0
 [v0.3.2]: https://github.com/davidalpert/go-git-mob/compare/v0.3.1...v0.3.2
