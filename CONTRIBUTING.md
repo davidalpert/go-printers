@@ -75,7 +75,7 @@ A quick discussion to coordinate a proposed change before you start can save hou
 * [ruby 3.0.2](https://www.ruby-lang.org/en/documentation/installation/) [optional]
 
   * this project offers ruby and guard to provide real-time validation of grammar and spelling in key markdown files
-  * use a ruby version manager like [rbenv](https://github.com/rbenv) or [asdf](https://asdf-vm.com/); or
+  * use a version manager like [mise](https://mise.jdx.dev/) or [rbenv](https://github.com/rbenv); or
   * install directly from [ruby-lang.org](https://www.ruby-lang.org/en/documentation/installation/)
 
 ### Get the code

@@ -39,16 +39,8 @@ jobs:
         reporter: github-pr-check
         version: 2.17.0
 
-    - name: Install asdf & tools # except ruby; not required for releasing
-      uses: asdf-vm/actions/install@v3
-      with:
-        before_install: "sed -E -i '/^ruby.+$/d' .tool-versions"
-
-    - name: Setup build dependencies
-      run: |
-        go install github.com/restechnica/semverbot/cmd/sbot@latest
-        go install github.com/siderolabs/conform/cmd/conform@latest
-        asdf reshim golang
+    - name: Install tools
+      uses: jdx/mise-action@v2
 
     - name: Unit tests
       run: |

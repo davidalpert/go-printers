@@ -120,62 +120,28 @@ function findCmd() {
   set -e
 }
 
-function grepVersion() {
-  CMD=$1
-  VERSION_CMD=$2
-  PATTERN=$3
-  DOCS_URL=$4
-  withPadding "checking $CMD version (want $PATTERN)"
-  set +e
-  OUT=$($VERSION_CMD)
-  BIN_EXIT_CODE=$?
-  if [[ "$BIN_EXIT_CODE" == "0" && $(echo "$OUT" | grep -e "$PATTERN") ]]; then
-    echo -e "$pass $OUT"
-  elif [[ -n "$DOCS_URL" ]]; then
-    warn "visit $DOCS_URL to download & install $CMD matching $PATTERN"
-    exit 1
-  else
-    echo -e "$fail $OUT"
-    printf "\n"
-    exit 1
-  fi
-  set -e
-}
-
-# set GO version from go.mod if not already set in ENV
-GO_MOD=$(cat go.mod | grep "^go" | awk '{ print $2 }')
-GO=${GO:=$GO_MOD}
-
 # ---------------------------------------------------------------------------------------------------------------------
 #
 note "inspecting dev dependencies"
-findCmd make
 findCmd git
-findCmd go
-if [[ -n "$GO" ]]; then
-  grepVersion 'go' 'go version' "$GO"
-fi
+findCmd mise "" "https://mise.jdx.dev/getting-started.html"
 
-REQUIRED_RUBY_VERSION=`cat .tool-versions | grep ruby | awk '{print $2}'`
-findCmd ruby
-grepVersion 'ruby' 'ruby --version' "$REQUIRED_RUBY_VERSION"
-findCmd gem
-findCmd bundle 'gem install bundler'
+note "installing tools from .tool-versions"
+mise install
 
 # HACK: the following validations are handled by separate actions when run as part of an action workflow
 if [[ ! "$GITHUB_ACTIONS" == "true" ]]; then
-  # TODO: move to a script
-  # findCmd vale 'wget https://github.com/errata-ai/vale/releases/download/v2.15.4/vale_2.15.4_Linux_64-bit.tar.gz --directory-prefix=.tmp/ && tar -xvzf ./tmp/vale_2.15.4_Linux_64-bit.tar.gz -C /usr/local/bin'
   findCmd vale 'echo "view: https://vale.sh/docs/vale-cli/installation/"'
 fi
 
-findCmd sbot "go install github.com/restechnica/semverbot/cmd/sbot@latest"
-if [ ! -f .semverbot.toml ]; then
+findCmd gem
+findCmd bundle 'gem install bundler'
+
+if [ ! -f .sbot.toml ]; then
   note "initializing sbot"
   sbot init
 fi
 
-findCmd conform "go install github.com/siderolabs/conform/cmd/conform@latest"
 if [ ! -f .conform.yaml ]; then
   note "initializing conform"
   cat << EOD > .conform.yaml
@@ -212,7 +178,6 @@ policies: []
 EOD
 fi
 
-findCmd git-chglog "go install github.com/git-chglog/git-chglog/cmd/git-chglog@v0.15.1"
 if [ ! -f .chglog/config.yml ]; then
   note "initializing git-chglog"
   git-chglog --init
